@@ -1,0 +1,6 @@
+*~
+*.user
+*.user.*
+.log
+.fuse_hidden*
+*.swp
