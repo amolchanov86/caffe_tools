@@ -241,13 +241,13 @@ def main(argv):
 
         save_data = True
         act_shape = [samples_num, activations.shape[2], activations.shape[3], activations.shape[1]];
-        feat_dset  = h5datafile.create_dataset("/feat/img",    (samples_num,) + inputs.shape, dtype='uint8')
-        label_dset = h5datafile.create_dataset("/label/label", (samples_num,) + labels.shape, dtype='uint8')
+        feat_dset  = h5datafile.create_dataset("/feat/img",    inputs.shape, dtype='uint8')
+        label_dset = h5datafile.create_dataset("/label/label", labels.shape, dtype='uint8')
         logit_dset = h5datafile.create_dataset("/label/pred_logit", act_shape, dtype='float32')
 
         temp_dsets = []
         for temp_i in temperature:
-            temp_dset_cur = h5datafile.create_dataset("/label/pred_t%2.1f" % temp_i, act_shape, dtype='float32')
+            temp_dset_cur = h5datafile.create_dataset("/label/pred_t%3.1f" % temp_i, act_shape, dtype='float32')
             temp_dsets.append(temp_dset_cur)
 
     # Fixing the start time
