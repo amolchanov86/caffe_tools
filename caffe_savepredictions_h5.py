@@ -127,12 +127,19 @@ def savepredicitons_h5(input_file,
         act_shape = [samples_num, activations.shape[2], activations.shape[3], activations.shape[1]];
         feat_dset = h5datafile.create_dataset("/feat/img", inputs.shape, dtype='uint8')
         label_dset = h5datafile.create_dataset("/label/label", labels.shape, dtype='uint8')
-        logit_dset = h5datafile.create_dataset("/label/pred_logit", act_shape, dtype='float32')
+        logit_dset = h5datafile.create_dataset("/label/logit", act_shape, dtype='float32')
+        temperature_dset = h5datafile.create_dataset("/param/temperatures", data=temperatures, dtype='float32')
 
         temp_dsets = []
-        for temp_i in temperatures:
-            temp_dset_cur = h5datafile.create_dataset("/label/pred_t%3.1f" % temp_i, act_shape, dtype='float32')
+        if len(temperatures) == 1:
+            temp_dset_cur = h5datafile.create_dataset("/label/softlabel" % temperatures[0], act_shape, dtype='float32')
             temp_dsets.append(temp_dset_cur)
+        else:
+            for temp_i in temperatures:
+                temp_dset_cur = h5datafile.create_dataset("/label/softlabel_t%3.1f" % temp_i, act_shape, dtype='float32')
+                temp_dsets.append(temp_dset_cur)
+
+
 
     # Fixing the start time
     start_time = time.time()
