@@ -132,7 +132,7 @@ def savepredicitons_h5(input_file,
 
         temp_dsets = []
         if len(temperatures) == 1:
-            temp_dset_cur = h5datafile.create_dataset("/label/softlabel" % temperatures[0], act_shape, dtype='float32')
+            temp_dset_cur = h5datafile.create_dataset("/label/softlabel", act_shape, dtype='float32')
             temp_dsets.append(temp_dset_cur)
         else:
             for temp_i in temperatures:
