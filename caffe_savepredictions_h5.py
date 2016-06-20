@@ -128,7 +128,7 @@ def savepredicitons_h5(input_file,
         save_data = True
         act_shape = [samples_num, activations.shape[2], activations.shape[3], activations.shape[1]]
         feat_dset = h5datafile.create_dataset("/feat/img", inputs.shape, dtype='uint8')
-        label_dset = h5datafile.create_dataset("/label/label", labels.shape, dtype='uint8')
+        label_dset = h5datafile.create_dataset("/label/hardlabel", labels.shape, dtype='uint8')
         # This one is necessary for compatibility with old naming
         # if '/label/img' in h5datafile.keys():
         #     h5datafile['/label/label'] = h5datafile['/label/img']
