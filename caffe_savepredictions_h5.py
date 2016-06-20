@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from skimage import io
 import h5py
 import cv2
+import shutil
 
 import caffe
 
@@ -121,14 +122,20 @@ def savepredicitons_h5(input_file,
     save_data = False
     if output_file != '':
         # Opening HDF5 file
+        # shutil.copyfile(input_file, output_file)
         h5datafile = h5py.File(output_file, "w")
 
         save_data = True
-        act_shape = [samples_num, activations.shape[2], activations.shape[3], activations.shape[1]];
+        act_shape = [samples_num, activations.shape[2], activations.shape[3], activations.shape[1]]
         feat_dset = h5datafile.create_dataset("/feat/img", inputs.shape, dtype='uint8')
         label_dset = h5datafile.create_dataset("/label/label", labels.shape, dtype='uint8')
+        # This one is necessary for compatibility with old naming
+        # if '/label/img' in h5datafile.keys():
+        #     h5datafile['/label/label'] = h5datafile['/label/img']
         logit_dset = h5datafile.create_dataset("/label/logit", act_shape, dtype='float32')
         temperature_dset = h5datafile.create_dataset("/param/temperatures", data=temperatures, dtype='float32')
+        val_set_file.copy('/crossval_indx', h5datafile)
+        val_set_file.copy('/crossval_names', h5datafile)
 
         temp_dsets = []
         if len(temperatures) == 1:
@@ -193,7 +200,7 @@ def savepredicitons_h5(input_file,
 
         if save_data:
             feat_dset[img_indx, :] = inputs[img_indx, :]
-            label_dset[img_indx, :] = labels[img_indx, :]
+            label_dset[img_indx, :] = labels[img_indx, :] #the old way of copying labels
             logit_dset[img_indx, :] = activations_swaped
 
             temp_i = -1
