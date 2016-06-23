@@ -1,0 +1,2 @@
+Drawing network:
+draw_net train_val.prototxt out.png
