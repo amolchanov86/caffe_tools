@@ -8,7 +8,7 @@ import os
 import sys
 
 ## NOTES:
-# Convolutional filter order:
+# Convolutional filter dimensions order:
 # TF :          H xx W xx IN_ch xx OUT_ch
 # Caffe:        OUT_ch xx IN_ch xx H xx W
 
@@ -39,7 +39,7 @@ def main(argv):
     # Creating HDF5 dataset
     if args.h5_filename is None:
         name =  os.path.basename( os.path.splitext(args.model)[0] )
-        output_file = name + ".h5"
+        output_file = name + "_weights.h5"
     else:
         output_file = args.h5_filename
 
@@ -54,11 +54,11 @@ def main(argv):
 
     ## Crawling all parameters and dumping weitghts
     for param in params:
-        # print '{} weights are {} dimensional and biases are {} dimensional'.format(param, params[param][0].shape, params[param][1].shape)
+        print 'Dimensions order (W) = (out_ch, in_ch, h, w) '
         if len(net.params[param]) == 2:
-            print 'Param = ', param, 'W (out_ch, in_ch, kh, kw) = ', net.params[param][0].data.shape, ' B = ', net.params[param][1].data.shape
+            print 'Param = ', param, 'W = ', net.params[param][0].data.shape, ' B = ', net.params[param][1].data.shape
         else:
-            print 'Param = ', param, 'W (out_ch, in_ch, kh, kw) = ', net.params[param][0].data.shape
+            print 'Param = ', param, 'W = ', net.params[param][0].data.shape
 
         # Saving in hdf5
         blobs_num = len(net.params[param])
