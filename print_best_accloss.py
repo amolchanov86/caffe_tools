@@ -69,12 +69,16 @@ proc_fig = [plt.figure(i) for i in range(len(proc_key)-1)]
 
 print 'File', in_file, 'Interval:', time_int
 
+updates = 0
+
+
 while True:
+    updates += 1
     proc_step = 0
     proc_val = [[] for i in range(len(proc_key))]
     f = open(in_file)
     lines = f.readlines()
-    #print 'Lines total', len(lines)
+    print 'Update: %d Lines total %d' % (updates, len(lines))
     for line_indx, line in enumerate(lines):
         pos,val = proc_func[proc_step](line, proc_key[proc_step])
         if pos > 0:
@@ -86,7 +90,8 @@ while True:
     for i, key in enumerate(proc_key):
         if i == 0:
             continue
-        print('key:', proc_key[i], ' values:\n', proc_val[i])
+        #print('key:', proc_key[i], ' values:\n', proc_val[i])
+        
         plt.figure(i-1)
         plt.clf()
         plt.plot(proc_val[0], proc_val[i])
@@ -97,7 +102,8 @@ while True:
             best_id = np.argmax(proc_val[i])
             best_val = np.max(proc_val[i])
         plt.title(str(proc_key[i]) + ':: val_{best}: ' + str(best_val) + ' i_{best}: ' + str(proc_val[0][best_id]))
-    plt.show()
+        plt.pause(0.01)
+    plt.show(block=False)
     
     #Printing results
     #if len(accuracies) > 0:
