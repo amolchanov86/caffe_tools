@@ -24,11 +24,14 @@ if len(sys.argv) > argpos:
 acc_str = 'accuracy ='    
 iter_str = 'Iteration'
 
+print 'File', in_file, 'Interval:',time_int
+
 while True:
     accuracies = []
     f = open(in_file)
     lines = f.readlines()
     line_indx = -1
+    print 'Lines total', len(lines)
     for line in lines:
         line_indx = line_indx + 1
         pos = line.find(acc_str)
